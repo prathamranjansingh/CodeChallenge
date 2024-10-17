@@ -1,5 +1,6 @@
 import express from 'express'
+import accounts from './accounts';
 
 const router = express.Router();
-router.use("/problem", problem)
+
 router.use('/accounts', accounts)
