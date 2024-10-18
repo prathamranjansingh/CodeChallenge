@@ -3,6 +3,7 @@ import ProblemModel from "../models/problem"
 import UserModel from "../models/user"
 import { DProblem } from "../models/problem"
 import { sortByAcceptance, sortByDifficulty, sortByTitle } from "../utils/utils"
+import { writeTestFile } from "../utils/createTest"
 const problem = express.Router();
 
 problem.post("/all", async(req, res)=>{
@@ -60,3 +61,116 @@ problem.post("/all", async(req, res)=>{
     }
 })
 
+problem.post<
+    { name: string },
+    Submission[],
+    { code: string; id: string; problem_name: string }
+>("/submit/:name", async(req,res)=>{
+        const {name} = req.params;
+        const {id, problem_name} = req.body;
+
+        try{
+            const problem = await ProblemModel.findOne({
+                "main.name": name,
+            });
+            const user = await UserModel.findById(id);
+            if(!user){
+                res.json([
+                    {
+                        problem_name: problem_name,
+                        status: "Runtime Error",
+                        error: "user not found",
+                        time: new Date(),
+                        runtime: 0,
+                        language: "JavaScript",
+                        memory: Math.random() * 80,
+                        code_body: undefined,
+                    }
+                ]);
+                return;
+            }
+            let history: Submission[] | null;
+            if(user.submissions){
+                history = user.submissions;
+            }else{
+                history = null;
+            }
+
+            if(problem){
+                writeTestFile(req.body.code, problem.test, problem.function_name)
+                .then(async (resolve) => {
+                    if (resolve.stdout != undefined) {
+                        console.log(resolve.stdout);
+                        let submission: Submission[] = [
+                            {
+                                problem_name: problem_name,
+                                status: resolve.stdout.status,
+                                error: resolve.stdout.error_message,
+                                time: resolve.stdout.date,
+                                runtime: resolve.stdout.runtime,
+                                language: "JavaScript",
+                                memory: Math.random() * 80,
+                                code_body: resolve.code_body,
+                                input: resolve.stdout.input,
+                                expected_output: resolve.stdout.expected_output,
+                                user_output: resolve.stdout.user_output,
+                            },
+                        ];
+                        if (history != null) {
+                            submission.push(...history);
+                        }
+
+                        const subsByName = submission.filter(
+                            (elem) => elem.problem_name === problem_name
+                        );
+                        user.submissions = submission;
+
+                        if (submission[0].status === "Accepted") {
+                            if (!user.problems_solved.includes(problem_name)) {
+                                user.problems_solved.push(problem_name);
+                                user.problems_solved_count += 1;
+                            }
+                        } else {
+                            if (
+                                !user.problems_attempted.includes(problem_name)
+                            ) {
+                                user.problems_attempted.push(problem_name);
+                            }
+                        }
+                        await user.save();
+                        res.json(subsByName);
+                    }
+                }).catch(async (e) => {
+                    let submission: Submission[] = [
+                        {
+                            problem_name: problem_name,
+                            status: "Runtime Error",
+                            error: e,
+                            time: new Date(),
+                            runtime: 0,
+                            language: "JavaScript",
+                            memory: Math.random() * 80,
+                            code_body: undefined,
+                        },
+                    ];
+                    if (history) {
+                        submission.push(...history);
+                    }
+
+                    if (!user.problems_attempted.includes(problem_name)) {
+                        user.problems_attempted.push(problem_name);
+                    }
+
+                    const subsByName = submission.filter(
+                        (elem) => elem.problem_name === problem_name
+                    );
+
+                    user.submissions = submission;
+                    await user.save();
+                    res.json(subsByName);
+                });
+            }
+        }catch(e){
+            console.log(e)
+        }
+});
