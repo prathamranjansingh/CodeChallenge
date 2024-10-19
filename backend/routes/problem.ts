@@ -174,3 +174,27 @@ problem.post<
             console.log(e)
         }
 });
+
+problem.post<{name: string},Submission[],{id: string}>("/submissions/:name",async(req,res)=>{
+    const {name} = req.params;
+    const {id} = req.body;
+    try {
+        const user = await UserModel.findById(id)
+        if(!user){
+            res.json([]);
+            return;
+        }
+        if(!user.submissions){
+            res.json([]);
+            return;
+        }
+
+        const subsByName = user.submissions.filter(
+            (elem) => elem.problem_name === name
+        );
+        res.json(subsByName);
+    } catch (error) {
+        console.log(error);
+        res.json([]);
+    }
+})
