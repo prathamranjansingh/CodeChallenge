@@ -198,3 +198,49 @@ problem.post<{name: string},Submission[],{id: string}>("/submissions/:name",asyn
         res.json([]);
     }
 })
+
+problem.post('/:name',async(req,res)=>{
+    const {name} = req.param;
+    const {id} = req.body;
+    try {
+        const problem = await ProblemModel.findOne({
+            "main.name":name
+        });
+
+        const user = await UserModel.findById(id);
+        const problemJson: DProblem = JSON.parse(JSON.stringify(problem));
+
+        if(user?.problems_attempted.includes(name)){
+            problemJson.main.status = "attempted";
+        }
+        if(user?.problems_solved.includes(name)){
+            problemJson.main.status = "solved";
+        }
+
+        if (problemJson) {
+            const response = problemJson;
+            res.json(response);
+        } else {
+            res.json({ error: "problem not found" });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+problem.get("/:name/editorial", async (req, res) => {
+    const name = req.params.name;
+    try {
+        const problem = await ProblemModel.findOne({
+            "main.name": name,
+        });
+        if (problem) {
+            const response = problem.editorial;
+            res.json(response);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+export default problem;
