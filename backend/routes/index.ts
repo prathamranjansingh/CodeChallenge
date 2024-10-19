@@ -1,6 +1,10 @@
-import express from 'express'
-import accounts from './accounts';
+import express from "express";
+import problem from "./problem";
+import accounts from "./accounts";
 
 const router = express.Router();
 
-router.use('/accounts', accounts)
+router.use("/problem", problem);
+router.use("/accounts", accounts);
+
+export default router;
