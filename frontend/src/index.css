@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.top-grad {
+  border-radius: 24px 24px 0 0; 
+  background: url('/src/assets/header_img.png') center center / cover no-repeat, #0a0a0a; /* Cover the entire div */
+}
