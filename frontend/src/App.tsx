@@ -3,7 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 
-export const API_URL = "http://localhost:80";
+export const API_URL = "http://localhost:5040";
 const App = () => {
   return (
     <>
