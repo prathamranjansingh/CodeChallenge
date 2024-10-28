@@ -32,7 +32,7 @@ accounts.post<
   {},
   { id?: string; token?: string; success: boolean; message: string },
   User
->("signup", async (req, res) => {
+>("/signup", async (req, res) => {
     try {
         const result = signupSchema.safeParse(req.body);
         if (!result.success) {

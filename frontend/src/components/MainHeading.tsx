@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { motion } from "framer-motion";
+import SidePanel from "./SidePanel";
+import Tooltip from "./Tooltip";
+import Notification from "./Notification";
 
 export const SlideTabsExample = () => {
   return (
@@ -17,67 +20,86 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
     width: 0,
     opacity: 0,
   });
+
+  const [sidePanelState, setSidePanelState] = useState<boolean>(false);
+  const [notifDisplayState, setNotifDisplayState] = useState<boolean>(false);
+
   return (
     <>
       <div className="flex items-center justify-center md:justify-between mx-2 h-20">
         <Link to="/" className="select-none hidden md:block">
           <h1 className="text-white text-2xl font-normal ">CodeStakes</h1>
         </Link>
-        <ul
-          onMouseLeave={() => {
-            setPosition((pv) => ({
-              ...pv,
-              opacity: 0,
-            }));
-          }}
-          className="relative flex w-fit rounded-2xl border border-[#ffffff5d] bg-[#ffffff18] p-1"
-        >
-          <Tab setPosition={setPosition}>Home</Tab>
-          <Tab setPosition={setPosition}>Pricing</Tab>
-          <Tab setPosition={setPosition}>Features</Tab>
-          <Tab setPosition={setPosition}>Docs</Tab>
-          <Tab setPosition={setPosition}>Blog</Tab>
+        {data != undefined &&
+          "items" in data &&
+          data.items != undefined &&
+          data.items.length !== 0 &&
+          data.items.map((elem) => (
+            <Link
+              to={elem.link_path}
+              className="mt-[15px] hidden md:inline-block text-[14px] h-fit p-[5px] text-[#808080] hover:text-white transition"
+            >
+              <div id={elem.text}>{elem.text}</div>
+            </Link>
+          ))}
+        {data?.status === "loggedin" || data?.status == undefined ? (
+          <div className="fixed flex flex-row right-[36px] items-center h-[60px]">
+            <div className="inline-block p-[5px] text-[14px] text-[#808080] md:hidden">
+              <div className="group w-[32px] h-[32px] border border-borders rounded-[99px] relative hover:bg-[#222] cursor-pointer">
+                <i className="bi bi-three-dots-vertical absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:text-white"></i>
+              </div>
+            </div>
 
-          <Cursor position={position} />
-        </ul>
+            <div
+              id="notification"
+              className="inline-block p-[5px] text-[14px] text-[#808080] "
+            >
+              <Notification
+                display={notifDisplayState}
+                displayFn={setNotifDisplayState}
+              />
+            </div>
+            <div
+              id="profile-picture"
+              className="inline-block relative p-[5px] text-[14px] text-[#808080] "
+              onClick={() => setSidePanelState(!sidePanelState)}
+            >
+              <Tooltip text={data?.username || ""}>
+                <div className="w-[32px] h-[32px] border border-borders rounded-[99px]"></div>
+              </Tooltip>
+            </div>
+            <SidePanel
+              displayFn={setSidePanelState}
+              display={sidePanelState}
+              data={{
+                username: data?.username || "",
+              }}
+            />
+          </div>
+        ) : data?.status === "not-loggedin" ? (<div className="fixed flex flex-row right-[36px] items-center h-[60px]">
+          <Link
+            to="/login"
+            className="inline-block font-bold py-[6px] px-[16px] bg-black hover:bg-borders border rounded-md border-borders text-white text-[14px]"
+          >
+            Log In
+          </Link>
+          <Link
+            to="/signup"
+            className="ml-[8px] font-bold inline-block py-[6px] px-[16px] bg-gradient-to-r from-orange-500 to-red-600 border rounded-md border-borders text-black text-[14px] hover:bg-red-800"
+          >
+            Sign Up
+          </Link>
+        </div>)
+
+          : (<></>)}
+
+
       </div>
+      
     </>
   );
 };
 
-const Tab = ({ children, setPosition }) => {
-  const ref = useRef(null);
 
-  return (
-    <li
-      ref={ref}
-      onMouseEnter={() => {
-        if (!ref?.current) return;
-
-        const { width } = ref.current.getBoundingClientRect();
-
-        setPosition({
-          left: ref.current.offsetLeft,
-          width,
-          opacity: 1,
-        });
-      }}
-      className="relative z-10 block cursor-pointer px-3 py-3 text-base uppercase text-white  md:px-5 md:py-3 md:text-base"
-    >
-      {children}
-    </li>
-  );
-};
-
-const Cursor = ({ position }) => {
-  return (
-    <motion.li
-      animate={{
-        ...position,
-      }}
-      className="absolute z-0 h-12 rounded-2xl bg-[#ffffff21] md:h-12"
-    />
-  );
-};
 
 export default MainHeading;

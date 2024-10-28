@@ -24,39 +24,40 @@ const SignUp = ({
 
   const handleSignUp = () => {
     setisLoading(true);
-    try {
-      if (password !== confirmPassword) {
-        setMessage(
-          "Password and confirm password do not match. Please make sure you enter the same password in both fields."
-        );
-        return;
-      }
-      axios
-        .post(`${API_URL}/api/accounts/signup`, {
-          username: username,
-          email: email,
-          password: password,
-        })
-        .then(({ data }) => {
-          Data.setTokenFunction(data.token);
-          Data.setIdFunction(data.id);
-          navigate("/problemset");
-        })
-        .catch((e: AxiosError) => {
-          setisLoading(false);
-          setMessage(
-            (
-              e.response?.data as {
-                success: boolean;
-                message: string;
-              }
-            ).message
-          );
-        });
-    } catch (error) {
-      console.error("Sign-up failed:", error);
+  
+    if (password !== confirmPassword) {
+      setMessage(
+        "Password and confirm password do not match. Please make sure you enter the same password in both fields."
+      );
+      setisLoading(false);
+      return;
     }
+  console.log(`${API_URL}/api/accounts/signup`);
+  
+    axios
+      .post(`${API_URL}/api/accounts/signup`, {
+        username: username,
+        email: email,
+        password: password,
+      })
+      .then(({ data }) => {
+        Data.setTokenFunction(data.token);
+        Data.setIdFunction(data.id);
+        navigate("/problemset");
+      })
+      .catch((e: AxiosError) => {
+        setisLoading(false);
+        const errorMessage =
+          e.response?.data?.message || "An error occurred during sign-up.";
+        setMessage(errorMessage);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
   };
+  
+
+
   return (
     <div className="bodyImg">
       <div className="fixed top-0 w-full py-4 shadow-md">

@@ -63,12 +63,12 @@ const LandingPage = ({
                         status: "none",
                     }}
                 />
-                <Header />
+                
                 </>
             )}
 
 
-      <MainHeading />
+<Header />
       
     </div>
   );

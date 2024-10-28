@@ -112,7 +112,7 @@ const Login = ({
               <span className="text-white">Don't have an account? </span>
               <Link
                 to="/signup"
-                className="text-black font-bold hover:text-white"
+                className="text-slate-300 font-bold hover:text-white"
               >
                 Signup
               </Link>
