@@ -31,12 +31,12 @@ const Notification = ({
                 </svg>
             </div>
             <div
-                className="w-[200px] h-fit py-4 px-4 bg-black border border-borders z-[120] absolute top-[68px] rounded-lg right-[50px]"
+                className="w-[200px] h-fit py-4 px-4   bg-[#000000da]  z-[120] absolute top-[68px] rounded-lg right-[50px]"
                 style={{
                     display: display ? "block" : "none",
                 }}
             >
-                <div className="text-[14px] text-text_2 w-full">
+                <div className="text-[14px] text-white w-full">
                     No Notification
                 </div>
             </div>

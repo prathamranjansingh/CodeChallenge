@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-
-import { motion } from "framer-motion";
 import SidePanel from "./SidePanel";
 import Tooltip from "./Tooltip";
 import Notification from "./Notification";
@@ -15,12 +13,6 @@ export const SlideTabsExample = () => {
 };
 
 const MainHeading = ({ data }: { data?: MainHeadingData }) => {
-  const [position, setPosition] = useState({
-    left: 0,
-    width: 0,
-    opacity: 0,
-  });
-
   const [sidePanelState, setSidePanelState] = useState<boolean>(false);
   const [notifDisplayState, setNotifDisplayState] = useState<boolean>(false);
 
@@ -63,7 +55,7 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
               onClick={() => setSidePanelState(!sidePanelState)}
             >
               <Tooltip text={data?.username || ""}>
-                <div className="w-[32px] h-[32px] border border-borders rounded-[99px]"></div>
+                <div className="w-[32px] h-[32px] border rounded-[99px]"></div>
               </Tooltip>
             </div>
             <SidePanel
@@ -74,16 +66,16 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
               }}
             />
           </div>
-        ) : data?.status === "not-loggedin" ? (<div className="fixed flex flex-row right-[36px] items-center h-[60px]">
+        ) : data?.status === "not-loggedin" ? (<div className="flex flex-row right-[36px] items-center h-[60px]">
           <Link
             to="/login"
-            className="inline-block font-bold py-[6px] px-[16px] bg-black hover:bg-borders border rounded-md border-borders text-white text-[14px]"
+            className="inline-block font-bold py-[6px] px-[16px] bg-black hover:bg-[#ffffff26] border rounded-md  text-white text-[14px]"
           >
             Log In
           </Link>
           <Link
             to="/signup"
-            className="ml-[8px] font-bold inline-block py-[6px] px-[16px] bg-gradient-to-r from-orange-500 to-red-600 border rounded-md border-borders text-black text-[14px] hover:bg-red-800"
+            className="ml-[8px] font-bold inline-block py-[6px] px-[16px] bg-gradient-to-r from-orange-500 to-red-600  rounded-md text-black text-[14px] hover:bg-red-800"
           >
             Sign Up
           </Link>

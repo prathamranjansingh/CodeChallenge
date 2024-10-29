@@ -3,6 +3,8 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { useEffect, useState } from "react";
+import SettingPage from "./pages/SettingPage";
+import ProfilePage from "./pages/ProfilePage";
 
 export const API_URL = "http://localhost:80";
 export const TOKEN_STORAGE_KEY = "authToken";
@@ -13,23 +15,23 @@ const App = () => {
   const [id, setId] = useState(localStorage.getItem(ID_STORAGE_KEY));
 
   const changeToken = (string: string) => {
-      setToken(string);
+    setToken(string);
   };
   const changeId = (string: string) => {
-      setId(string);
+    setId(string);
   };
 
   useEffect(() => {
-      if (token) {
-          localStorage.setItem(TOKEN_STORAGE_KEY, token);
-      } else {
-          localStorage.removeItem(TOKEN_STORAGE_KEY);
-      }
-      if (id) {
-          localStorage.setItem(ID_STORAGE_KEY, id);
-      } else {
-          localStorage.removeItem(ID_STORAGE_KEY);
-      }
+    if (token) {
+      localStorage.setItem(TOKEN_STORAGE_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+    }
+    if (id) {
+      localStorage.setItem(ID_STORAGE_KEY, id);
+    } else {
+      localStorage.removeItem(ID_STORAGE_KEY);
+    }
   }, [token, id]);
 
   return (
@@ -49,7 +51,16 @@ const App = () => {
             id: id || "",
             setIdFunction: changeId,
           }} />}></Route>
+           <Route
+          path="/settings"
+          element={<SettingPage token={token} id={id} />}
+        />
+        <Route
+          path="/accounts/:name"
+          element={<ProfilePage token={token} id={id} />}
+        />
         </Routes>
+       
       </BrowserRouter>
     </>
   );

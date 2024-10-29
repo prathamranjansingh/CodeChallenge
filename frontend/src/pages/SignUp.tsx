@@ -136,7 +136,7 @@ const SignUp = ({
               <span className="text-white">Already have an account? </span>
               <Link
                 to="/login"
-                className="text-black font-bold hover:text-white"
+                className="text-[#ffffffcb] font-bold hover:text-white"
               >
                 Login
               </Link>
