@@ -26,7 +26,7 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
 
   return (
     <>
-      <div className="flex items-center justify-center md:justify-between mx-2 h-20">
+      <div className="flex items-center justify-end md:justify-between mx-2 h-20">
         <Link to="/" className="select-none hidden md:block">
           <h1 className="text-white text-2xl font-normal ">CodeStakes</h1>
         </Link>
@@ -43,11 +43,9 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
             </Link>
           ))}
         {data?.status === "loggedin" || data?.status == undefined ? (
-          <div className="fixed flex flex-row right-[36px] items-center h-[60px]">
+          <div className="flex flex-row right-[36px] items-center h-[60px]">
             <div className="inline-block p-[5px] text-[14px] text-[#808080] md:hidden">
-              <div className="group w-[32px] h-[32px] border border-borders rounded-[99px] relative hover:bg-[#222] cursor-pointer">
-                <i className="bi bi-three-dots-vertical absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:text-white"></i>
-              </div>
+              
             </div>
 
             <div

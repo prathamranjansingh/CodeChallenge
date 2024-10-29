@@ -16,7 +16,7 @@ const SidePanelItem = ({
     return (
         <Link
             to={to}
-            className=" block w-[88%] mx-auto my-[8px] rounded-md hover:bg-borders py-[6px] px-[10px] text-[14px] text-text_2 hover:text-white"
+            className="slide block text-lg font-light w-[88%] mx-auto my-[8px] rounded-md py-[6px] px-[10px] text-[14px] hover:text-white"
             style={style}
         >
             <div>{text}</div>
@@ -53,21 +53,22 @@ const SidePanel = ({
             <div
                 className={` fixed z-[90] ${
                     display ? "translate-x-[-100%]" : " translate-x-[0]"
-                } left-full top-[-1px] rounded-l-lg bg-black h-[calc(100vh+2px)] w-[320px] transition ease-in-out border border-borders border-r-0`}
+                } left-full top-[-1px] rounded-l-lg bg-black bg-opacity-70 text-white font-semibold h-[calc(100vh+2px)] w-[320px] transition ease-in-out `}
             >
-                <div className="relative h-[100px]  ">
-                    <div className="absolute top-[13px] left-[16px] w-[32px] h-[32px] border border-borders rounded-[99px]"></div>
-                    <div className="absolute top-[17px] left-[64px] text-[14px]">
-                        {data.username}
+                <div className="relative h-[100px] top-4 ">
+                    <div className="absolute top-[10px] left-[28px] text-lg font-light">
+                       Hello {data.username} ! 👋
                     </div>
                     <button
                         onClick={() => displayFn(false)}
-                        className=" relative w-[30px] h-[30px] text-borders hover:text-white hover:bg-borders rounded-md left-[274px] top-[13px] "
+                        className="bg-whtie relative w-[30px] h-[30px] text-white hover:text-white hover:bg-borders rounded-md left-[274px] top-[13px] "
                     >
-                        <i className="bi bi-x-lg"></i>
+                        <span className="material-symbols-outlined">
+                        close
+                        </span>
                     </button>
                 </div>
-                <hr className="border-borders w-[88%] mx-auto" />
+                
                 <SidePanelItem
                     text="Your profile"
                     to={`/accounts/${data.username}`}
@@ -75,9 +76,9 @@ const SidePanel = ({
                 <SidePanelItem text="Problem list" to={`/problemset`} />
                 <SidePanelItem text="Settings" to={`/settings`} />
 
-                <hr className="border-borders w-[88%] mx-auto" />
+                
                 <div
-                    className=" block w-[88%] mx-auto my-[8px] rounded-md hover:bg-borders py-[6px] px-[10px] text-[14px] text-text_2 hover:text-white hover:bg-red-600 cursor-pointer "
+                    className=" block w-[88%] mx-auto text-center text-lg font-light border border-1 border-white my-10 rounded-md hover:bg-borders py-[6px] px-[10px] text-[14px] hover:text-white hover:bg-[#ffffff28] cursor-pointer "
                     onClick={() => setLogoutState(!logoutState)}
                 >
                     Log out
