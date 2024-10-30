@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import { useEffect, useState } from "react";
 import SettingPage from "./pages/SettingPage";
 import ProfilePage from "./pages/ProfilePage";
+import ProblemSet from "./pages/ProblemSet";
 
 export const API_URL = "http://localhost:80";
 export const TOKEN_STORAGE_KEY = "authToken";
@@ -39,6 +40,10 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage token={token} id={id} />}></Route>
+          <Route path="/problemset" element={<ProblemSet token={token} id={id} />} />
+
+
+
           <Route path="/login" element={<Login Data={{
             token: token || "",
             setTokenFunction: changeToken,
@@ -51,16 +56,16 @@ const App = () => {
             id: id || "",
             setIdFunction: changeId,
           }} />}></Route>
-           <Route
-          path="/settings"
-          element={<SettingPage token={token} id={id} />}
-        />
-        <Route
-          path="/accounts/:name"
-          element={<ProfilePage token={token} id={id} />}
-        />
+          <Route
+            path="/settings"
+            element={<SettingPage token={token} id={id} />}
+          />
+          <Route
+            path="/accounts/:name"
+            element={<ProfilePage token={token} id={id} />}
+          />
         </Routes>
-       
+
       </BrowserRouter>
     </>
   );

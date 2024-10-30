@@ -19,8 +19,7 @@
 }
 
 .bodyImg {
-  height: 100vh;
-  width: 100%;
+
   background: url('/src/assets/body_img.png') bottom / 100% auto no-repeat, #0a0a0a;
 }
 
@@ -105,4 +104,11 @@ i,em {
   border-radius: 0.1em;
   opacity: 0;
   transition: opacity 0.5s, transform 0.5s;
+}
+
+@media (min-width: 1024px) {
+  .bodyImg {
+      height: 100vh;
+      width: 100%;
+  }
 }
