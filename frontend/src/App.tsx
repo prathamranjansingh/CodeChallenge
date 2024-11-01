@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SettingPage from "./pages/SettingPage";
 import ProfilePage from "./pages/ProfilePage";
 import ProblemSet from "./pages/ProblemSet";
+import { ProblemPage } from "./pages/ProblemPage";
 
 export const API_URL = "http://localhost:80";
 export const TOKEN_STORAGE_KEY = "authToken";
@@ -41,7 +42,26 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage token={token} id={id} />}></Route>
           <Route path="/problemset" element={<ProblemSet token={token} id={id} />} />
-
+          <Route
+                        path="/problem/:name/editorial"
+                        element={
+                            <ProblemPage
+                                data={{ activeNavOption: "editorial" }}
+                                token={token}
+                                id={id}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/problem/:name/solutions"
+                        element={
+                            <ProblemPage
+                                data={{ activeNavOption: "solutions" }}
+                                token={token}
+                                id={id}
+                            />
+                        }
+                    />
 
 
           <Route path="/login" element={<Login Data={{
